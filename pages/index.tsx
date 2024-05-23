@@ -5,12 +5,14 @@ import { getSearchLayout } from "../components/layouts/SearchLayout";
 import { useSerumMarkets } from "../hooks/useSerumMarkets";
 import { classNames } from "../utils/general";
 import { prettifyDecimal } from "../utils/numerical";
+import Loader from "../components/common/Loader";
 
 const Home = () => {
   const router = useRouter();
   const { network } = router.query;
 
   const { serumMarkets, loading: serumMarketsLoading } = useSerumMarkets();
+  
   const StatBlock = ({
     children,
     loading,
@@ -31,10 +33,12 @@ const Home = () => {
     ) : (
       <div
         className={classNames(
-          "animate-pulse bg-slate-800 py-2 px-3 rounded-md space-y-1 border border-slate-700",
+          "bg-slate-800 py-2 px-3 rounded-md space-y-1 border border-slate-700 flex items-center justify-center",
           height ? `h-${height}` : "h-20"
         )}
-      />
+      >
+        <Loader />
+      </div>
     );
   };
 

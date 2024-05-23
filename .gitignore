@@ -36,4 +36,3 @@ yarn-error.log*
 
 # serum-dev-tools
 /dev-tools
-/test-ledger
