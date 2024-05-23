@@ -15,11 +15,66 @@ import { prettifyPubkey } from "../../utils/pubkey";
 import debounce from "lodash.debounce";
 import { useRouter } from "next/router";
 import { HeaderLayout } from "./HeaderLayout";
+import { PublicKey } from "@solana/web3.js";
+import { AccountTypes } from "../../utils/typeChecks";
+
 
 type SearchLayoutProps = {
   title?: string;
   children: ReactNode;
 };
+
+const defaultMarkets: SerumMarketInfo[] = [
+  {
+    address: new PublicKey("8BnEgHoWFysVcuFFX7QztDmzuH8r5ZFvyP3sYwn1XTh6"), baseSymbol: "SOL", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("BbJgE7HZMaDp5NTYvRh5jZSkQPVDTU8ubPFtpogUkEj4"), baseSymbol: "ETH", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("8PhnCfgqpgFM7ZJvttGdBVMXHuU4Q23ACxCvWkbs1M71"), baseSymbol: "BONK", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("H87FfmHABiZLRGrDsXRZtqq25YpARzaokCzL1vMYGiep"), baseSymbol: "JTO", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("FbwncFP5bZjdx8J6yfDDTrCmmMkwieuape1enCvwLG33"), baseSymbol: "JUP", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("3NnxQvDcZXputNMxaxsGvqiKpqgPfSYXpNigZNFcknmD"), baseSymbol: "MNGO", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("4E17F3BxtNVqzVsirxguuqkpYLtFgCR6NfTpccPh82WE"), baseSymbol: "PYTH", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("JAmhJbmBzLp2aTp9mNJodPsTcpCJsmq5jpr6CuCbWHvR"), baseSymbol: "JitoSOL", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("9Lyhks5bQQxb9EyyX55NtgKQzpM4WK7JCmeaWuQ5MoXD"), baseSymbol: "mSOL", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("8rUvvjhtyjiJYTVhNn8usWDAQn1RHwt2adChzk7ANeT4"), baseSymbol: "SOLAPE", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("74fKpZ1NFfusLacyVzQdMXXawe9Dr1Kz8Yw1cw12QQ3y"), baseSymbol: "MOUTAI", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  {
+    address: new PublicKey("DZjbn4XC8qoHKikZqzmhemykVzmossoayV9ffbsUqxVj"), baseSymbol: "RAY", quoteSymbol: "USDC",
+    type: AccountTypes.SerumMarketInfo
+  },
+  // Add more default markets as needed
+];
 
 export const SearchLayout: FC<SearchLayoutProps> = ({
   title,
@@ -34,7 +89,7 @@ export const SearchLayout: FC<SearchLayoutProps> = ({
   const [marketQuery, setMarketQuery] = useState("");
 
   const [filteredMarkets, setFilteredMarkets] = useState(
-    serumMarkets ? serumMarkets : []
+    serumMarkets ? serumMarkets : defaultMarkets
   );
 
   const queryChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,19 +119,19 @@ export const SearchLayout: FC<SearchLayoutProps> = ({
           serumMarkets.filter((row) => serumMarketFilter(q, row)).slice(0, 5)
         );
       } else setFilteredMarkets(serumMarkets.slice(0, 5));
-    } else setFilteredMarkets([]);
+    } else setFilteredMarkets(defaultMarkets);
   }, [marketQuery, serumMarkets]);
 
   return (
     <HeaderLayout title={title}>
       <div>
-      <div className="text-center mb-4">
-              <h1 className="text-2xl font-bold">Find your market!</h1>
-              <p className="text-lg">Paste a market address to proceed.</p>
-          </div>
+        <div className="text-center mb-4">
+          <h1 className="mt-10 text-2xl font-bold">Access market data and tooling</h1>
+          <p className="text-lg">Paste a market address to proceed.</p>
+        </div>
         <Combobox value={selected} onChange={(value) => handleSelect(value)}>
           <div className="relative mt-1">
-            <div className="relative w-full cursor-default overflow-hidden rounded-md  bg-slate-800 text-left border border-slate-700 focus-visible:border-0 focus-visible:outline-none focus-visible:ring-0">
+            <div className="relative w-full cursor-default overflow-hidden rounded-md bg-slate-800 text-left border border-slate-700 focus-visible:border-0 focus-visible:outline-none focus-visible:ring-0">
               <Combobox.Button as="div">
                 <Combobox.Input
                   placeholder="Search markets"
@@ -106,7 +161,7 @@ export const SearchLayout: FC<SearchLayoutProps> = ({
                 ) : (
                   filteredMarkets.map((market) => (
                     <Combobox.Option
-                      key={market.address.toBase58()}
+                      key={market.address.toString()}
                       className={({ active }) =>
                         `relative cursor-pointer select-none py-2 px-4 flex items-center justify-between ${
                           active
