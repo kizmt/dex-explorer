@@ -8,10 +8,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "engines": {
-    "npm": ">=10.0.0",
-    "node": ">=18.0.0"
-  },
   "dependencies": {
     "@headlessui/react": "^1.6.5",
     "@heroicons/react": "^2.0.12",

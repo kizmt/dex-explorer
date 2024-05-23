@@ -70,6 +70,10 @@ export const SearchLayout: FC<SearchLayoutProps> = ({
   return (
     <HeaderLayout title={title}>
       <div>
+      <div className="text-center mb-4">
+              <h1 className="text-2xl font-bold">Find your market!</h1>
+              <p className="text-lg">Paste a market address to proceed.</p>
+          </div>
         <Combobox value={selected} onChange={(value) => handleSelect(value)}>
           <div className="relative mt-1">
             <div className="relative w-full cursor-default overflow-hidden rounded-md  bg-slate-800 text-left border border-slate-700 focus-visible:border-0 focus-visible:outline-none focus-visible:ring-0">
